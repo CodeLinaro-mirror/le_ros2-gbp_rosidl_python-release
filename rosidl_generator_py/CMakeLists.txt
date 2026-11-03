@@ -55,7 +55,14 @@ if(BUILD_TESTING)
 
     set(_append_library_dirs "")
     if(WIN32)
-      set(_append_library_dirs "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>")
+      # Single config generators put the libraries directly in the binary
+      # directory, not in a per-config subdirectory.
+      get_property(_is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+      if(_is_multi_config)
+        set(_append_library_dirs "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>")
+      else()
+        set(_append_library_dirs "${CMAKE_CURRENT_BINARY_DIR}")
+      endif()
     endif()
 
     set(pythonpath "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py;${CMAKE_CURRENT_SOURCE_DIR}")
@@ -63,6 +70,13 @@ if(BUILD_TESTING)
       string(REPLACE ";" ":" pythonpath "${pythonpath}")
     endif()
     ament_add_pytest_test(test_interfaces_py "test/test_interfaces.py"
+      APPEND_ENV "PYTHONPATH=${pythonpath}"
+      APPEND_LIBRARY_DIRS "${_append_library_dirs}"
+      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py"
+    )
+
+    ament_add_pytest_test(test_convert_round_trip_py "test/test_convert_round_trip.py"
+      ENV "ROSIDL_GENERATOR_PY_TYPESUPPORT_DIR=$<TARGET_FILE_DIR:${PROJECT_NAME}_s__rosidl_typesupport_c>"
       APPEND_ENV "PYTHONPATH=${pythonpath}"
       APPEND_LIBRARY_DIRS "${_append_library_dirs}"
       WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py"
