@@ -2,13 +2,13 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>rosidl_generator_py</name>
-  <version>0.28.0</version>
+  <version>0.28.1</version>
   <description>Generate the ROS interfaces in Python.</description>
 
   <maintainer email="dharini@openrobotics.org">Dharini Dutia</maintainer>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
 
-  <license>Apache License 2.0</license>
+  <license>Apache-2.0</license>
 
   <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
   <author>Esteve Fernandez</author>
@@ -20,6 +20,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <build_export_depend>rmw</build_export_depend>
+  <build_export_depend>rosidl_cmake</build_export_depend>
 
   <buildtool_export_depend>ament_cmake</buildtool_export_depend>
   <buildtool_export_depend>ament_index_python</buildtool_export_depend>
@@ -32,7 +33,6 @@
        so ideally a 'test_export_depend' (similar to 'build_export_depend') would be used.
        Since that feature doesn't exist yet, they are 'exec_depend'-ed.
        See https://github.com/ros2/rosidl_python/pull/199 -->
-  <exec_depend>ament_cmake_cppcheck</exec_depend>
   <exec_depend>ament_cmake_cpplint</exec_depend>
   <exec_depend>ament_cmake_flake8</exec_depend>
   <exec_depend>ament_cmake_mypy</exec_depend>
